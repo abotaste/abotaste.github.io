@@ -1059,6 +1059,29 @@ function showToast(msg){
 // INIT
 // ══════════════════════════════════════
 renderMenu();
+
+// ══════════════════════════════════════
+// OPENINGSTIJDEN (15:00 – 05:00)
+// ══════════════════════════════════════
+function isOpen() {
+  const now = new Date();
+  const h = now.getHours();
+  return h >= 15 || h < 5;
+}
+
+function checkOpeningstijd() {
+  if (!isOpen()) {
+    document.body.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#0a0a0a;color:#fff;font-family:sans-serif;text-align:center;padding:2rem;">
+        <div style="font-size:3rem;margin-bottom:1rem;">🕒</div>
+        <h1 style="font-size:1.6rem;margin-bottom:0.5rem;">Momenteel gesloten</h1>
+        <p style="color:#aaa;font-size:1rem;">Abo Taste is open van <strong style="color:#fff;">15:00</strong> tot <strong style="color:#fff;">05:00</strong>.</p>
+        <p style="color:#666;font-size:0.85rem;margin-top:1.5rem;">Tot straks! 👋</p>
+      </div>`;
+  }
+}
+
+checkOpeningstijd();
 </script>
 </body>
 </html>
