@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Abo Taste"/>
+<meta name="theme-color" content="#0a0a0a"/>
+<title>Abo Taste — Bestel App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0A0A0A;
+  --bg2:#111111;
+  --bg3:#181818;
+  --bg4:#202020;
+  --bg5:#2A2A2A;
+  --orange:#E8702A;
+  --orange2:#FF8C42;
+  --gold:#D4A017;
+  --gold2:#F5C842;
+  --white:#F5F0E8;
+  --off:#B8B0A0;
+  --gray:#706860;
+  --green:#4CAF7D;
+  --red:#E05252;
+  --wa:#25D366;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--bg);}
+body{
+  font-family:'DM Sans',sans-serif;
+  color:var(--white);
+  display:flex;flex-direction:column;
+  max-width:430px;margin:0 auto;
+  position:relative;
+  overflow:hidden;
+}
+
+/* ── SCREENS ── */
+.screen{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s ease, transform .3s ease;
+  background:var(--bg);
+  overflow:hidden;
+}
+.screen.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.screen.slide-out{transform:translateX(-30px);}
+.screen.slide-in{transform:translateX(30px);}
+
+/* ── SPLASH ── */
+#splash{
+  background:var(--bg);
+  align-items:center;justify-content:center;
+  gap:0;
+}
+.splash-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 30%, rgba(232,112,42,0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 80%, rgba(212,160,23,0.06) 0%, transparent 60%);
+}
+.splash-logo{
+  position:relative;z-index:1;text-align:center;
+  animation:splashIn .8s cubic-bezier(.16,1,.3,1) both;
+}
+.splash-logo-text{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:80px;letter-spacing:6px;line-height:1;
+  background:linear-gradient(135deg,var(--gold2),var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.splash-sub{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-top:8px;}
+.splash-halal{
+  position:relative;z-index:1;
+  margin-top:20px;
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(232,112,42,0.08);border:1px solid rgba(232,112,42,0.2);
+  border-radius:20px;padding:7px 16px;
+  font-size:11px;font-weight:700;color:var(--orange);letter-spacing:1.5px;text-transform:uppercase;
+  animation:splashIn .8s .2s cubic-bezier(.16,1,.3,1) both;
+}
+.splash-btn{
+  position:relative;z-index:1;
+  margin-top:48px;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  color:#0a0500;padding:18px 48px;border-radius:3px;
+  font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  border:none;cursor:pointer;
+  box-shadow:0 8px 32px rgba(232,112,42,0.3);
+  animation:splashIn .8s .35s cubic-bezier(.16,1,.3,1) both;
+  transition:transform .2s,box-shadow .2s;
+}
+.splash-btn:active{transform:scale(.97);}
+.splash-note{
+  position:relative;z-index:1;
+  margin-top:20px;font-size:11px;color:var(--gray);
+  animation:splashIn .6s .5s ease both;
+  letter-spacing:.5px;
+}
+@keyframes splashIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── TOP BAR ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;
+  background:rgba(10,10,10,0.95);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  flex-shrink:0;
+  padding-top:calc(16px + var(--safe-top));
+  position:sticky;top:0;z-index:10;
+}
+.topbar-logo{
+  font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;
+  background:linear-gradient(135deg,var(--gold2),var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.topbar-title{font-size:16px;font-weight:700;color:var(--white);}
+.topbar-back{
+  background:none;border:none;color:var(--orange);
+  font-size:13px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;gap:4px;letter-spacing:.5px;padding:4px 0;
+}
+.cart-btn{
+  position:relative;background:none;border:none;cursor:pointer;
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  border-radius:50%;background:var(--bg3);
+}
+.cart-icon{font-size:20px;}
+.cart-badge{
+  position:absolute;top:2px;right:2px;
+  min-width:18px;height:18px;border-radius:9px;
+  background:var(--orange);color:var(--bg);
+  font-size:10px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 4px;
+  transform:scale(0);transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.cart-badge.show{transform:scale(1);}
+
+/* ── SCROLLABLE CONTENT ── */
+.scroll-area{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:16px;
+}
+.scroll-area::-webkit-scrollbar{display:none;}
+/* Home screen needs extra space for bottom nav */
+#homeScreen .scroll-area{
+  padding-bottom:calc(80px + var(--safe-bottom));
+}
+
+/* ── HOME SCREEN ── */
+.home-hero{
+  padding:24px 20px 20px;
+  background:linear-gradient(180deg,rgba(232,112,42,0.06) 0%,transparent 100%);
+}
+.home-greeting{font-size:13px;color:var(--gray);letter-spacing:.5px;margin-bottom:4px;}
+.home-headline{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;line-height:1.1;}
+.home-headline span{
+  background:linear-gradient(135deg,var(--gold2),var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.home-status{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:12px;padding:7px 14px;border-radius:2px;
+  background:rgba(76,175,125,0.1);border:1px solid rgba(76,175,125,0.2);
+  font-size:11px;font-weight:700;color:var(--green);letter-spacing:1px;text-transform:uppercase;
+}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
+
+/* Category pills */
+.cat-scroll{
+  display:flex;gap:10px;padding:16px 20px;
+  overflow-x:auto;scrollbar-width:none;flex-shrink:0;
+}
+.cat-scroll::-webkit-scrollbar{display:none;}
+.cat-pill{
+  flex-shrink:0;padding:10px 18px;border-radius:3px;
+  font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,0.07);
+  background:var(--bg3);color:var(--gray);
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.cat-pill.active{
+  background:var(--orange);color:var(--bg);border-color:var(--orange);
+}
+.cat-pill:active{transform:scale(.97);}
+
+/* Section label */
+.section-lbl{
+  padding:0 20px 12px;
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;
+}
+
+/* Menu items */
+.menu-list{padding:0 20px;display:flex;flex-direction:column;gap:10px;}
+.menu-item{
+  background:var(--bg3);border:1px solid rgba(255,255,255,0.04);
+  border-radius:4px;padding:16px;
+  display:flex;justify-content:space-between;align-items:center;
+  cursor:pointer;transition:all .2s;
+  position:relative;overflow:hidden;
+}
+.menu-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(var(--gold),var(--orange));
+  transform:scaleY(0);transform-origin:bottom;transition:transform .25s;
+}
+.menu-item:active{transform:scale(.99);background:var(--bg4);}
+.menu-item.in-cart::before{transform:scaleY(1);}
+.item-info{flex:1;margin-right:12px;}
+.item-name{font-size:14px;font-weight:700;color:var(--white);}
+.item-desc{font-size:11px;color:var(--gray);margin-top:3px;line-height:1.45;}
+.item-note{font-size:10px;color:rgba(112,104,96,.7);margin-top:2px;}
+.item-tags{display:flex;gap:5px;margin-top:6px;}
+.itag{font-size:9px;padding:2px 7px;border-radius:1px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+.itag-hot{background:rgba(232,112,42,0.12);color:var(--orange);border:1px solid rgba(232,112,42,0.2);}
+.itag-new{background:rgba(224,82,82,0.1);color:#e07070;border:1px solid rgba(224,82,82,0.2);}
+.itag-deal{background:rgba(212,160,23,0.1);color:var(--gold2);border:1px solid rgba(212,160,23,0.2);}
+.item-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;}
+.item-price{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold2);letter-spacing:1px;}
+.add-btn{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  border:none;color:var(--bg);font-size:20px;font-weight:300;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:transform .15s,box-shadow .15s;
+  flex-shrink:0;line-height:1;
+}
+.add-btn:active{transform:scale(.9);}
+.qty-ctrl{
+  display:flex;align-items:center;gap:0;
+  background:var(--bg4);border-radius:20px;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.qty-btn{
+  width:30px;height:30px;border:none;background:none;
+  color:var(--orange);font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-weight:700;
+  transition:background .15s;
+}
+.qty-btn:active{background:rgba(232,112,42,0.1);}
+.qty-num{font-size:13px;font-weight:800;color:var(--white);min-width:20px;text-align:center;}
+
+/* Info cards */
+.info-cards{display:flex;gap:10px;padding:0 20px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;}
+.info-cards::-webkit-scrollbar{display:none;}
+.info-card{
+  flex-shrink:0;background:var(--bg3);border:1px solid rgba(255,255,255,0.04);
+  border-radius:4px;padding:14px 16px;min-width:120px;text-align:center;
+}
+.info-card-icon{font-size:22px;margin-bottom:6px;}
+.info-card-val{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--orange);letter-spacing:1px;}
+.info-card-lbl{font-size:9px;color:var(--gray);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+
+/* ── CART SCREEN ── */
+.cart-empty{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:40px;text-align:center;gap:12px;
+}
+.cart-empty-icon{font-size:60px;opacity:.3;}
+.cart-empty-title{font-size:18px;font-weight:700;color:var(--off);}
+.cart-empty-sub{font-size:13px;color:var(--gray);line-height:1.6;}
+.cart-items{padding:16px 20px;display:flex;flex-direction:column;gap:10px;}
+.cart-item{
+  background:var(--bg3);border:1px solid rgba(255,255,255,0.04);
+  border-radius:4px;padding:14px 16px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.cart-item-name{font-size:14px;font-weight:700;}
+.cart-item-price{font-size:12px;color:var(--gray);margin-top:2px;}
+.cart-item-right{display:flex;align-items:center;gap:10px;}
+.cart-item-total{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold2);}
+.remove-btn{
+  width:26px;height:26px;border-radius:50%;
+  background:rgba(224,82,82,0.1);border:1px solid rgba(224,82,82,0.2);
+  color:var(--red);font-size:14px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+}
+.remove-btn:active{background:rgba(224,82,82,0.2);}
+
+/* Cart note */
+.cart-note-wrap{padding:0 20px 16px;}
+.cart-note-label{font-size:11px;color:var(--gray);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;font-weight:700;}
+.cart-note-input{
+  width:100%;background:var(--bg3);border:1px solid rgba(255,255,255,0.06);
+  border-radius:3px;padding:12px 14px;
+  font-size:13px;color:var(--white);font-family:'DM Sans',sans-serif;
+  resize:none;outline:none;line-height:1.5;
+}
+.cart-note-input:focus{border-color:rgba(232,112,42,0.3);}
+.cart-note-input::placeholder{color:var(--gray);}
+
+/* Cart summary */
+.cart-summary{
+  margin:0 20px;background:var(--bg3);border:1px solid rgba(255,255,255,0.04);
+  border-radius:4px;padding:16px;
+}
+.sum-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;color:var(--gray);}
+.sum-row.total{color:var(--white);font-weight:800;font-size:16px;border-top:1px solid rgba(255,255,255,.05);margin-top:8px;padding-top:12px;}
+.sum-row.total .sum-val{color:var(--gold2);font-family:'Bebas Neue',sans-serif;font-size:22px;}
+
+/* Delivery toggle */
+.delivery-toggle{
+  display:flex;gap:8px;padding:0 20px 16px;
+}
+.del-opt{
+  flex:1;padding:12px 8px;border-radius:3px;text-align:center;
+  border:1px solid rgba(255,255,255,0.06);background:var(--bg3);
+  cursor:pointer;transition:all .2s;
+}
+.del-opt.active{border-color:var(--orange);background:rgba(232,112,42,0.08);}
+.del-opt-icon{font-size:20px;margin-bottom:4px;}
+.del-opt-label{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--gray);}
+.del-opt.active .del-opt-label{color:var(--orange);}
+
+/* Address input */
+.address-wrap{padding:0 20px 16px;}
+.address-input{
+  width:100%;background:var(--bg3);border:1px solid rgba(255,255,255,0.06);
+  border-radius:3px;padding:13px 14px;
+  font-size:13px;color:var(--white);font-family:'DM Sans',sans-serif;
+  outline:none;
+}
+.address-input:focus{border-color:rgba(232,112,42,0.3);}
+.address-input::placeholder{color:var(--gray);}
+
+/* ── BOTTOM BAR ── */
+.bottom-bar{
+  flex-shrink:0;
+  padding:12px 20px;
+  padding-bottom:calc(12px + var(--safe-bottom));
+  background:rgba(10,10,10,0.97);
+  backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,0.04);
+  z-index:10;
+}
+.order-btn{
+  width:100%;padding:17px;border-radius:3px;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  color:#0a0500;font-size:13px;font-weight:800;
+  letter-spacing:2px;text-transform:uppercase;
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 6px 24px rgba(232,112,42,0.3);
+  transition:transform .2s,box-shadow .2s;
+}
+.order-btn:active{transform:scale(.99);box-shadow:0 2px 8px rgba(232,112,42,0.2);}
+.order-btn:disabled{background:var(--bg4);color:var(--gray);box-shadow:none;cursor:not-allowed;}
+.order-btn-price{
+  background:rgba(0,0,0,0.15);padding:4px 10px;border-radius:2px;
+  font-size:14px;letter-spacing:1px;
+}
+
+/* ── CONFIRM SCREEN ── */
+.confirm-wrap{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:32px 24px;text-align:center;
+  gap:16px;
+}
+.confirm-icon{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;
+  animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes popIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+.confirm-title{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;color:var(--white);}
+.confirm-sub{font-size:14px;color:var(--off);line-height:1.65;max-width:280px;}
+.wa-big-btn{
+  width:100%;padding:18px;border-radius:3px;
+  background:var(--wa);color:#fff;
+  font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 8px 28px rgba(37,211,102,0.3);
+  transition:transform .2s;
+  text-decoration:none;
+}
+.wa-big-btn:active{transform:scale(.99);}
+.confirm-order-summary{
+  width:100%;background:var(--bg3);border:1px solid rgba(255,255,255,.04);
+  border-radius:4px;padding:16px;text-align:left;
+}
+.confirm-item{
+  display:flex;justify-content:space-between;
+  font-size:13px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);
+}
+.confirm-item:last-child{border-bottom:none;}
+.confirm-item-name{color:var(--off);}
+.confirm-item-price{color:var(--gold2);font-weight:700;}
+
+/* ── INFO SCREEN ── */
+.info-screen{padding:0 20px 20px;}
+.info-block{
+  background:var(--bg3);border:1px solid rgba(255,255,255,.04);
+  border-radius:4px;padding:20px;margin-bottom:12px;
+}
+.info-block-title{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:13px;}
+.info-row:last-child{border-bottom:none;}
+.info-row-lbl{color:var(--gray);}
+.info-row-val{font-weight:700;color:var(--white);}
+.info-row-val.green{color:var(--green);}
+.info-row-val.gold{color:var(--gold2);}
+.social-links{display:flex;flex-direction:column;gap:8px;}
+.social-link{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:3px;
+  text-decoration:none;font-size:13px;font-weight:700;
+  border:1px solid rgba(255,255,255,.05);background:var(--bg4);
+  color:var(--white);transition:all .2s;
+}
+.social-link:active{opacity:.8;}
+.social-link.wa{border-color:rgba(37,211,102,.3);background:rgba(37,211,102,.06);color:var(--green);}
+.social-link.snap{background:#FFFC00;color:#000;border-color:#FFFC00;}
+.social-link.insta{background:linear-gradient(135deg,rgba(240,148,51,.15),rgba(220,39,67,.15));border-color:rgba(220,39,67,.2);}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:absolute;bottom:0;left:0;right:0;
+  display:flex;
+  background:rgba(10,10,10,0.97);
+  backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,0.04);
+  padding-bottom:var(--safe-bottom);
+  z-index:20;
+}
+.nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:10px 0;gap:4px;cursor:pointer;transition:all .2s;
+  border:none;background:none;position:relative;
+}
+.nav-icon{font-size:22px;transition:transform .2s;}
+.nav-label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray);transition:color .2s;}
+.nav-item.active .nav-label{color:var(--orange);}
+.nav-item.active .nav-icon{transform:scale(1.1);}
+.nav-cart-badge{
+  position:absolute;top:6px;right:calc(50% - 22px);
+  min-width:16px;height:16px;border-radius:8px;
+  background:var(--orange);color:var(--bg);
+  font-size:9px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 3px;
+  transform:scale(0);transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.nav-cart-badge.show{transform:scale(1);}
+
+/* Divider */
+.divider{height:1px;background:rgba(255,255,255,0.04);margin:0 20px 16px;}
+
+/* Toast */
+.toast{
+  position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);
+  background:var(--bg4);border:1px solid rgba(232,112,42,0.3);
+  border-radius:3px;padding:10px 20px;
+  font-size:12px;font-weight:700;color:var(--orange);letter-spacing:.5px;
+  white-space:nowrap;z-index:200;
+  opacity:0;transition:all .3s;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* Pulse btn */
+@keyframes btnPulse{0%,100%{box-shadow:0 6px 24px rgba(232,112,42,0.3);}50%{box-shadow:0 6px 36px rgba(232,112,42,0.5);}}
+.order-btn:not(:disabled){animation:btnPulse 2.5s infinite;}
+
+/* Loading dots on splash */
+.loading-dots{display:flex;gap:6px;margin-top:32px;}
+.loading-dots span{
+  width:6px;height:6px;border-radius:50%;background:var(--orange);
+  animation:dot .8s ease-in-out infinite;
+}
+.loading-dots span:nth-child(2){animation-delay:.15s;}
+.loading-dots span:nth-child(3){animation-delay:.3s;}
+@keyframes dot{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════
+     SPLASH SCREEN
+═══════════════════════════════════════ -->
+<div class="screen active" id="splashScreen">
+  <div class="splash-bg"></div>
+  <div class="splash-logo">
+    <div class="splash-logo-text">ABO<br>TASTE</div>
+    <div class="splash-sub">Smash Burgers · Helmond</div>
+  </div>
+  <div class="splash-halal">✦ 100% Halal gecertificeerd ✦</div>
+  <button class="splash-btn" onclick="goHome()">Bestel Nu 🍔</button>
+  <p class="splash-note">Bezorging · Afhalen · Elke dag open</p>
+  <div class="loading-dots" style="display:none" id="loadDots">
+    <span></span><span></span><span></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     HOME / MENU SCREEN
+═══════════════════════════════════════ -->
+<div class="screen" id="homeScreen">
+  <div class="topbar">
+    <div class="topbar-logo">Abo Taste</div>
+    <button class="cart-btn" onclick="showCart()">
+      <span class="cart-icon">🛒</span>
+      <span class="cart-badge" id="topCartBadge">0</span>
+    </button>
+  </div>
+  <div class="scroll-area">
+    <div class="home-hero">
+      <div class="home-greeting">Hallo 👋 Wat mag het zijn?</div>
+      <div class="home-headline">Verse <span>Smash</span><br>Burgers</div>
+      <div class="home-status">
+        <span class="status-dot"></span>
+        Nu open · Elke dag
+      </div>
+    </div>
+
+    <!-- Info cards -->
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="info-card-icon">🛵</div>
+        <div class="info-card-val">Snel</div>
+        <div class="info-card-lbl">Bezorging</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">✅</div>
+        <div class="info-card-val">100%</div>
+        <div class="info-card-lbl">Halal</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">💰</div>
+        <div class="info-card-val">€15</div>
+        <div class="info-card-lbl">Min. bestel</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📍</div>
+        <div class="info-card-val">2</div>
+        <div class="info-card-lbl">Steden</div>
+      </div>
+    </div>
+
+    <!-- Category filter -->
+    <div class="cat-scroll" id="catScroll">
+      <div class="cat-pill active" onclick="filterCat('all',this)">Alles</div>
+      <div class="cat-pill" onclick="filterCat('burgers',this)">🍔 Burgers</div>
+      <div class="cat-pill" onclick="filterCat('combos',this)">🎁 Combos</div>
+      <div class="cat-pill" onclick="filterCat('snacks',this)">🍗 Snacks</div>
+      <div class="cat-pill" onclick="filterCat('dranken',this)">🥤 Dranken</div>
+    </div>
+
+    <!-- Menu items -->
+    <div class="menu-list" id="menuList"></div>
+    <div style="height:16px;"></div>
+  </div>
+
+  <!-- Bottom bar: bekijk bestelling -->
+  <div class="bottom-bar" id="homeBottomBar" style="display:none;">
+    <button class="order-btn" onclick="showCart()">
+      <span>Bekijk bestelling</span>
+      <span class="order-btn-price" id="homeTotalPrice">€0,00</span>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     CART SCREEN
+═══════════════════════════════════════ -->
+<div class="screen" id="cartScreen">
+  <div class="topbar">
+    <button class="topbar-back" onclick="showHome()">← Menu</button>
+    <div class="topbar-title">Mijn bestelling</div>
+    <div style="width:60px;"></div>
+  </div>
+
+  <div class="scroll-area" id="cartContent">
+    <!-- Filled by JS -->
+  </div>
+
+  <div class="bottom-bar" id="cartBottomBar">
+    <button class="order-btn" id="checkoutBtn" onclick="doCheckout()" disabled>
+      <span>Bestellen via WhatsApp</span>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     CONFIRM SCREEN
+═══════════════════════════════════════ -->
+<div class="screen" id="confirmScreen">
+  <div class="topbar">
+    <button class="topbar-back" onclick="showHome()">← Terug naar menu</button>
+    <div class="topbar-title">Klaar!</div>
+    <div style="width:80px;"></div>
+  </div>
+  <div class="confirm-wrap">
+    <div class="confirm-icon">🍔</div>
+    <div class="confirm-title">Bijna daar!</div>
+    <p class="confirm-sub">Jouw bestelling staat klaar. Stuur het via WhatsApp en wij bevestigen je order direct.</p>
+    <div class="confirm-order-summary" id="confirmSummary"></div>
+    <a class="wa-big-btn" id="waConfirmBtn" href="#" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Stuur via WhatsApp
+    </a>
+    <button onclick="resetOrder()" style="background:none;border:none;color:var(--gray);font-size:13px;cursor:pointer;margin-top:8px;font-family:'DM Sans',sans-serif;">Nieuwe bestelling starten</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     INFO SCREEN
+═══════════════════════════════════════ -->
+<div class="screen" id="infoScreen">
+  <div class="topbar">
+    <div class="topbar-logo">Abo Taste</div>
+    <div style="width:40px;"></div>
+  </div>
+  <div class="scroll-area">
+    <div class="info-screen">
+      <div style="padding:16px 0 20px;">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;">Info & Contact</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;">Bereik ons direct</div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-block-title">Openingstijden & bezorging</div>
+        <div class="info-row"><span class="info-row-lbl">Openingstijden</span><span class="info-row-val green">Elke dag open</span></div>
+        <div class="info-row"><span class="info-row-lbl">Min. bestelling</span><span class="info-row-val gold">€15,00</span></div>
+        <div class="info-row"><span class="info-row-lbl">Afhalen</span><span class="info-row-val green">Gratis</span></div>
+        <div class="info-row"><span class="info-row-lbl">Betalen</span><span class="info-row-val">Cash bij bezorging</span></div>
+        <div class="info-row"><span class="info-row-lbl">Bezorggebied</span><span class="info-row-val">Helmond · Eindhoven</span></div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-block-title">Contact & socials</div>
+        <div class="social-links">
+          <a href="https://wa.me/31687974324?text=Hallo%20Abo%20Taste!" class="social-link wa" target="_blank">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            +31 6 87 97 43 24 · WhatsApp
+          </a>
+          <a href="https://www.snapchat.com/add/abotaste" class="social-link snap" target="_blank">
+            👻 Snapchat · Abotaste
+          </a>
+          <a href="https://instagram.com/abotaste" class="social-link insta" target="_blank">
+            📸 Instagram · @Abotaste
+          </a>
+          <a href="https://wa.me/31687974324?text=Waar%20kan%20ik%20afhalen%3F" class="social-link" target="_blank">
+            📍 Locatie · Helmond · Vraag adres op
+          </a>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-block-title">Over ons</div>
+        <p style="font-size:13px;color:var(--off);line-height:1.7;font-weight:300;">Abo Taste is een 100% halal burger business vanuit het hart van Helmond. Verse smash burgers, knapperige randen, gesmolten kaas en onze eigen huissaus — bezorgd aan jouw deur of af te halen. Elke dag van de week.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     BOTTOM NAV
+═══════════════════════════════════════ -->
+<div class="bottom-nav" id="bottomNav">
+  <button class="nav-item active" id="navHome" onclick="navTo('home')">
+    <span class="nav-icon">🍔</span>
+    <span class="nav-label">Menu</span>
+  </button>
+  <button class="nav-item" id="navCart" onclick="navTo('cart')">
+    <span class="nav-icon">🛒</span>
+    <span class="nav-label">Bestelling</span>
+    <span class="nav-cart-badge" id="navCartBadge">0</span>
+  </button>
+  <button class="nav-item" id="navInfo" onclick="navTo('info')">
+    <span class="nav-icon">ℹ️</span>
+    <span class="nav-label">Info</span>
+  </button>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// DATA
+// ══════════════════════════════════════
+const MENU = [
+  // BURGERS
+  {id:1, cat:'burgers', name:'Smash Burger', desc:'Knapperige smash patty, gesmolten kaas, sla, tomaat, ui, huissaus', note:'Incl. friet & huissaus', price:10.00, tags:['hot'], emoji:'🍔'},
+  {id:2, cat:'burgers', name:'Double Smash', desc:'2 smash patties, dubbele kaas, alle toppings, huissaus', note:'Incl. friet & huissaus', price:13.50, tags:['new'], emoji:'🍔'},
+  {id:3, cat:'burgers', name:'Crispy Chicken Burger', desc:'Knapperige kipfilet, sla, mayo, augurk', note:'Incl. friet & huissaus', price:10.00, tags:[], emoji:'🍗'},
+  {id:4, cat:'burgers', name:'Kids Burger', desc:'Kleine smash burger, kaas, ketchup', note:'Incl. kleine friet', price:6.50, tags:['new'], emoji:'🍔'},
+  {id:5, cat:'burgers', name:'Losse Burger', desc:'Smash burger zonder friet', note:'', price:5.50, tags:[], emoji:'🍔'},
+  // COMBOS
+  {id:6, cat:'combos', name:'Duo Combo', desc:'2× Smash Burger incl. friet + 2× drankje naar keuze', note:'Bespaar €2', price:18.00, tags:['new','deal'], emoji:'🎁'},
+  {id:7, cat:'combos', name:'Family Combo', desc:'4× losse burger + grote friet + 4× drankje naar keuze', note:'Bespaar €4', price:32.00, tags:['new','deal'], emoji:'🎁'},
+  // SNACKS
+  {id:8,  cat:'snacks', name:'Chicken Tenders 3st', desc:'Knapperige kipstrips', note:'', price:4.50, tags:[], emoji:'🍗'},
+  {id:9,  cat:'snacks', name:'Chicken Tenders 6st', desc:'Knapperige kipstrips', note:'', price:9.00, tags:[], emoji:'🍗'},
+  {id:10, cat:'snacks', name:'Hotwings 6st', desc:'Pittige kipvleugels', note:'', price:7.50, tags:[], emoji:'🌶️'},
+  {id:11, cat:'snacks', name:'Kipcorn', desc:'', note:'', price:2.00, tags:[], emoji:'🌽'},
+  {id:12, cat:'snacks', name:'Mexicano', desc:'', note:'', price:2.00, tags:[], emoji:'🌶️'},
+  {id:13, cat:'snacks', name:'Broodje los', desc:'', note:'', price:1.00, tags:[], emoji:'🍞'},
+  // DRANKEN
+  {id:14, cat:'dranken', name:'Cola', desc:'', note:'', price:2.50, tags:[], emoji:'🥤'},
+  {id:15, cat:'dranken', name:'Fanta', desc:'', note:'', price:2.50, tags:[], emoji:'🥤'},
+  {id:16, cat:'dranken', name:'Lipton Ice Tea', desc:'', note:'', price:2.50, tags:[], emoji:'🥤'},
+  {id:17, cat:'dranken', name:'Spa Blauw', desc:'', note:'', price:2.50, tags:[], emoji:'💧'},
+  {id:18, cat:'dranken', name:'Redbull', desc:'', note:'', price:3.00, tags:[], emoji:'🐂'},
+];
+
+const PHONE = '31687974324';
+let cart = {};
+let deliveryMode = 'bezorging'; // 'bezorging' | 'afhalen'
+let noteText = '';
+let addressText = '';
+let currentCat = 'all';
+let currentScreen = 'home';
+
+// ══════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════
+function goHome(){
+  document.getElementById('splashScreen').classList.remove('active');
+  document.getElementById('homeScreen').classList.add('active');
+  document.getElementById('bottomNav').style.display='flex';
+  renderMenu();
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function navTo(tab){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  // Always show bottom nav except on cart screen
+  const bottomNav = document.getElementById('bottomNav');
+  if(tab==='home'){
+    showScreen('homeScreen');
+    document.getElementById('navHome').classList.add('active');
+    bottomNav.style.display='flex';
+    currentScreen='home';
+  } else if(tab==='cart'){
+    renderCart();
+    showScreen('cartScreen');
+    document.getElementById('navCart').classList.add('active');
+    // Hide bottom nav on cart — checkout bar takes its place
+    bottomNav.style.display='none';
+    currentScreen='cart';
+  } else if(tab==='info'){
+    showScreen('infoScreen');
+    document.getElementById('navInfo').classList.add('active');
+    bottomNav.style.display='flex';
+    currentScreen='info';
+  }
+}
+
+function showHome(){
+  document.getElementById('bottomNav').style.display='flex';
+  navTo('home');
+}
+function showCart(){navTo('cart');}
+
+// ══════════════════════════════════════
+// MENU RENDERING
+// ══════════════════════════════════════
+function filterCat(cat, el){
+  currentCat = cat;
+  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  renderMenu();
+}
+
+function renderMenu(){
+  const list = document.getElementById('menuList');
+  const items = currentCat==='all' ? MENU : MENU.filter(i=>i.cat===currentCat);
+
+  // Group by category if 'all'
+  let html = '';
+  if(currentCat==='all'){
+    const cats = ['burgers','combos','snacks','dranken'];
+    const labels = {burgers:'🍔 Burgers',combos:'🎁 Combos',snacks:'🍗 Snacks',dranken:'🥤 Dranken'};
+    cats.forEach(cat=>{
+      const catItems = MENU.filter(i=>i.cat===cat);
+      html += `<div class="section-lbl" style="padding-top:8px;">${labels[cat]}</div>`;
+      catItems.forEach(item => html += renderItem(item));
+    });
+  } else {
+    items.forEach(item => html += renderItem(item));
+  }
+  list.innerHTML = html;
+}
+
+function renderItem(item){
+  const qty = cart[item.id] ? cart[item.id].qty : 0;
+  const inCart = qty > 0 ? 'in-cart' : '';
+  const tags = item.tags.map(t => {
+    if(t==='hot') return `<span class="itag itag-hot">Bestseller</span>`;
+    if(t==='new') return `<span class="itag itag-new">Nieuw</span>`;
+    if(t==='deal') return `<span class="itag itag-deal">Deal</span>`;
+    return '';
+  }).join('');
+  const tagHtml = tags ? `<div class="item-tags">${tags}</div>` : '';
+  const noteHtml = item.note ? `<div class="item-note">${item.note}</div>` : '';
+  const descHtml = item.desc ? `<div class="item-desc">${item.desc}</div>` : '';
+  const ctrl = qty > 0
+    ? `<div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty(${item.id},-1,event)">−</button>
+        <span class="qty-num">${qty}</span>
+        <button class="qty-btn" onclick="changeQty(${item.id},1,event)">+</button>
+       </div>`
+    : `<button class="add-btn" onclick="addItem(${item.id},event)">+</button>`;
+
+  return `<div class="menu-item ${inCart}" id="mitem-${item.id}" onclick="addItem(${item.id},event)">
+    <div class="item-info">
+      <div class="item-name">${item.emoji} ${item.name}</div>
+      ${descHtml}${noteHtml}${tagHtml}
+    </div>
+    <div class="item-right">
+      <div class="item-price">€${item.price.toFixed(2).replace('.',',')}</div>
+      ${ctrl}
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════
+// CART LOGIC
+// ══════════════════════════════════════
+function addItem(id, e){
+  if(e) e.stopPropagation();
+  const item = MENU.find(i=>i.id===id);
+  if(!cart[id]) cart[id] = {item, qty:0};
+  cart[id].qty++;
+  updateCartUI();
+  showToast(`${item.emoji} ${item.name} toegevoegd`);
+  // Re-render just this item
+  const el = document.getElementById('mitem-'+id);
+  if(el) el.outerHTML = renderItem(item);
+}
+
+function changeQty(id, delta, e){
+  if(e) e.stopPropagation();
+  if(!cart[id]) return;
+  cart[id].qty += delta;
+  if(cart[id].qty <= 0) delete cart[id];
+  updateCartUI();
+  const item = MENU.find(i=>i.id===id);
+  const el = document.getElementById('mitem-'+id);
+  if(el) el.outerHTML = renderItem(item);
+}
+
+function removeFromCart(id){
+  delete cart[id];
+  updateCartUI();
+  renderCart();
+}
+
+function getTotal(){
+  return Object.values(cart).reduce((s,c)=>s+c.item.price*c.qty,0);
+}
+
+function getCount(){
+  return Object.values(cart).reduce((s,c)=>s+c.qty,0);
+}
+
+function fmtPrice(p){
+  return '€'+p.toFixed(2).replace('.',',');
+}
+
+function updateCartUI(){
+  const count = getCount();
+  const total = getTotal();
+
+  // Top cart badge
+  const topBadge = document.getElementById('topCartBadge');
+  topBadge.textContent = count;
+  topBadge.classList.toggle('show', count>0);
+
+  // Nav badge
+  const navBadge = document.getElementById('navCartBadge');
+  navBadge.textContent = count;
+  navBadge.classList.toggle('show', count>0);
+
+  // Home bottom bar
+  const homeBar = document.getElementById('homeBottomBar');
+  if(homeBar){
+    homeBar.style.display = count>0 ? 'block' : 'none';
+    const priceEl = document.getElementById('homeTotalPrice');
+    if(priceEl) priceEl.textContent = fmtPrice(total);
+  }
+}
+
+// ══════════════════════════════════════
+// CART SCREEN
+// ══════════════════════════════════════
+function renderCart(){
+  const content = document.getElementById('cartContent');
+  const count = getCount();
+  const total = getTotal();
+
+  if(count===0){
+    content.innerHTML = `
+      <div class="cart-empty">
+        <div class="cart-empty-icon">🛒</div>
+        <div class="cart-empty-title">Nog niets besteld</div>
+        <div class="cart-empty-sub">Ga naar het menu en voeg iets toe aan je bestelling.</div>
+      </div>`;
+    const btn = document.getElementById('checkoutBtn');
+    btn.disabled = true;
+    btn.innerHTML = `<span>Bestellen via WhatsApp</span>`;
+    return;
+  }
+
+  let itemsHtml = '';
+  Object.values(cart).forEach(c=>{
+    itemsHtml += `
+      <div class="cart-item">
+        <div>
+          <div class="cart-item-name">${c.item.emoji} ${c.item.name} ×${c.qty}</div>
+          <div class="cart-item-price">${fmtPrice(c.item.price)} per stuk</div>
+        </div>
+        <div class="cart-item-right">
+          <div class="cart-item-total">${fmtPrice(c.item.price*c.qty)}</div>
+          <button class="remove-btn" onclick="removeFromCart(${c.item.id})">✕</button>
+        </div>
+      </div>`;
+  });
+
+  const isDelivery = deliveryMode==='bezorging';
+  const belowMin = total < 15 && isDelivery;
+
+  content.innerHTML = `
+    <div class="cart-items">${itemsHtml}</div>
+
+    <div class="divider"></div>
+
+    <div class="section-lbl">Bezorging of afhalen?</div>
+    <div class="delivery-toggle">
+      <div class="del-opt ${isDelivery?'active':''}" onclick="setDelivery('bezorging',this)">
+        <div class="del-opt-icon">🛵</div>
+        <div class="del-opt-label">Bezorging</div>
+      </div>
+      <div class="del-opt ${!isDelivery?'active':''}" onclick="setDelivery('afhalen',this)">
+        <div class="del-opt-icon">🏃</div>
+        <div class="del-opt-label">Afhalen</div>
+      </div>
+    </div>
+
+    ${isDelivery ? `
+    <div class="address-wrap">
+      <input class="address-input" type="text" placeholder="Jouw adres (straat + huisnummer)" id="addressInput" value="${addressText}" oninput="addressText=this.value"/>
+    </div>` : ''}
+
+    <div class="cart-note-wrap">
+      <div class="cart-note-label">Opmerkingen (optioneel)</div>
+      <textarea class="cart-note-input" rows="2" placeholder="Bijv. extra saus, geen ui..." id="noteInput" oninput="noteText=this.value">${noteText}</textarea>
+    </div>
+
+    <div class="cart-summary">
+      <div class="sum-row"><span>Subtotaal</span><span>${fmtPrice(total)}</span></div>
+      <div class="sum-row"><span>Bezorgkosten</span><span style="color:var(--green)">${isDelivery?'Gratis':'–'}</span></div>
+      ${belowMin?`<div class="sum-row" style="color:var(--red);font-size:12px;"><span>Min. bestelling</span><span>€15,00 vereist</span></div>`:''}
+      <div class="sum-row total"><span>Totaal</span><span class="sum-val">${fmtPrice(total)}</span></div>
+    </div>
+    <div style="height:16px;"></div>
+  `;
+
+  const canOrder = count>0 && (!isDelivery || total>=15);
+  const btn = document.getElementById('checkoutBtn');
+  btn.disabled = !canOrder;
+  if(!canOrder && belowMin){
+    btn.innerHTML = `<span>Voeg nog ${fmtPrice(15-total)} toe voor bezorging</span>`;
+  } else {
+    btn.innerHTML = `<span>Bestellen via WhatsApp</span><span class="order-btn-price">${fmtPrice(total)}</span>`;
+  }
+}
+
+function setDelivery(mode){
+  deliveryMode = mode;
+  renderCart();
+}
+
+// ══════════════════════════════════════
+// CHECKOUT
+// ══════════════════════════════════════
+function doCheckout(){
+  // Read latest note/address
+  const noteEl = document.getElementById('noteInput');
+  const addrEl = document.getElementById('addressInput');
+  if(noteEl) noteText = noteEl.value;
+  if(addrEl) addressText = addrEl.value;
+
+  const lines = Object.values(cart).map(c=>`• ${c.item.name} ×${c.qty} = ${fmtPrice(c.item.price*c.qty)}`).join('\n');
+  const total = getTotal();
+  const delivery = deliveryMode==='bezorging'
+    ? `🛵 BEZORGING${addressText ? '\nAdres: '+addressText : ''}`
+    : '🏃 AFHALEN';
+
+  let msg = `Hallo Abo Taste! Ik wil graag bestellen:\n\n${lines}\n\n`;
+  msg += `💰 Totaal: ${fmtPrice(total)}\n`;
+  msg += `${delivery}\n`;
+  msg += `💵 Betaling: Cash bij ontvangst\n`;
+  if(noteText) msg += `\n📝 Opmerking: ${noteText}`;
+
+  // Build confirm summary
+  let summaryHtml = Object.values(cart).map(c=>`
+    <div class="confirm-item">
+      <span class="confirm-item-name">${c.item.emoji} ${c.item.name} ×${c.qty}</span>
+      <span class="confirm-item-price">${fmtPrice(c.item.price*c.qty)}</span>
+    </div>`).join('');
+  summaryHtml += `<div class="confirm-item" style="margin-top:8px;border-top:1px solid rgba(255,255,255,.08);padding-top:8px;">
+    <span style="font-weight:800;color:var(--white);">Totaal</span>
+    <span style="color:var(--gold2);font-family:'Bebas Neue',sans-serif;font-size:18px;">${fmtPrice(total)}</span>
+  </div>`;
+
+  document.getElementById('confirmSummary').innerHTML = summaryHtml;
+  document.getElementById('waConfirmBtn').href = `https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`;
+
+  // Show confirm screen (without bottom nav)
+  document.getElementById('bottomNav').style.display='none';
+  showScreen('confirmScreen');
+}
+
+function resetOrder(){
+  cart={};noteText='';addressText='';deliveryMode='bezorging';
+  updateCartUI();
+  document.getElementById('bottomNav').style.display='flex';
+  navTo('home');
+}
+
+// ══════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+renderMenu();
+</script>
+</body>
+</html>
