@@ -1063,11 +1063,15 @@ renderMenu();
 // ══════════════════════════════════════
 // OPENINGSTIJDEN (15:00 – 05:00)
 // ══════════════════════════════════════
+const FORCE_OPEN = true; // ← HIER true of false aanpassen
+
 function isOpen() {
+  if (FORCE_OPEN) return true;
   const now = new Date();
   const h = now.getHours();
   return h >= 15 || h < 5;
 }
+
 
 function checkOpeningstijd() {
   if (!isOpen()) {
